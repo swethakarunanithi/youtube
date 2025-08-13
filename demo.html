@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=mic"
+    />
+    <title>YouTube</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
+
+      body {
+        background-color: #181818;
+        overflow-x: hidden;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: none;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: transparent;
+        border-radius: 5px;
+      }
+      .sidebar:hover::-webkit-scrollbar-thumb,
+      .content::-webkit-scrollbar-thumb {
+        background-color: #717171;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #888;
+      }
+
+      /* Header */
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #202020;
+        display: flex;
+        padding: 5px 10px;
+        z-index: 999;
+      }
+      .logo-container {
+        display: flex;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+      .logo-img {
+        height: 50px;
+        width: 50px;
+        position: relative;
+      }
+      .logo-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      #logo-txt {
+        color: #fff;
+        letter-spacing: -1.5px;
+        margin-left: 5px;
+        font-size: 1.5rem;
+      }
+      i {
+        color: white;
+        font-size: 1.5rem;
+        margin-top: 0.5rem;
+      }
+
+      .search-container {
+        display: flex;
+        align-items: center;
+        margin-left: 50px;
+      }
+      .search-container input {
+        height: 30px;
+        width: 500px;
+        background-color: #121212;
+        border: none;
+        color: #fff;
+        padding: 0 12px;
+      }
+      .search {
+        height: 30px;
+        min-width: 60px;
+        background-color: #313131;
+        border: none;
+        color: white;
+      }
+      .mic {
+        height: 30px;
+        min-width: 40px;
+        border-radius: 50%;
+        background-color: #181818;
+        border: none;
+        margin-left: 10px;
+        color: white;
+      }
+
+      /* Profile */
+      .profile-container {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+      .profile-container i {
+        margin-left: 20px;
+      }
+      .profile-box {
+        height: 30px;
+        width: 30px;
+        margin-left: 20px;
+      }
+      .profile-box img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+      }
+
+      /* Body */
+      .body-container {
+        display: flex;
+        margin-top: 60px;
+        height: calc(100vh - 60px);
+      }
+      .sidebar {
+        background-color: #121212;
+        color: white;
+        width: 240px;
+        overflow-y: auto;
+        height: 100%;
+      }
+      .sidebar a {
+        text-decoration: none;
+        color: white;
+        display: flex;
+        align-items: center;
+        height: 40px;
+        padding: 0 24px;
+      }
+      .sidebar a:hover {
+        background-color: #4c4c4c;
+      }
+      .sidebar i {
+        margin-right: 16px;
+      }
+      hr {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        margin: 12px 0;
+      }
+      h4.more {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        color: #aaa;
+        margin-left: 20px;
+      }
+
+      /* Main content */
+      .content {
+        flex: 1;
+        overflow-y: auto;
+        height: 100%;
+      }
+      .chips-wrapper {
+        background-color: #181818;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 10px;
+        overflow-x: auto;
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .chip {
+        display: inline-block;
+        margin-right: 10px;
+        padding: 6px 12px;
+        border-radius: 16px;
+        background-color: #373737;
+        color: white;
+        cursor: pointer;
+      }
+      .chip:hover {
+        background-color: #4d4d4d;
+      }
+
+      /* Video grid */
+      .video-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 16px;
+        padding: 16px;
+        background-color: #181818;
+      }
+      .video-content-cover {
+        position: relative;
+      }
+      .video-content {
+        width: 100%;
+        overflow: hidden;
+      }
+      .video-box {
+        position: relative;
+        width: 100%;
+        height: 170px;
+      }
+      .video-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .duration {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background-color: black;
+        color: white;
+        font-size: 0.8rem;
+        padding: 2px 6px;
+        border-radius: 3px;
+      }
+      .video-details {
+        display: flex;
+        margin-top: 10px;
+        color: white;
+      }
+      .channel-logo {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      .channel-logo img {
+        width: 100%;
+        height: 100%;
+      }
+      .detail {
+        margin-left: 10px;
+      }
+      .title {
+        font-size: 0.9rem;
+      }
+      .channel-name,
+      .views-upload {
+        font-size: 0.8rem;
+        color: #aaa;
+      }
+      .views-upload {
+        display: flex;
+        gap: 5px;
+      }
+
+      /* Hidden actions */
+      .hidden-content {
+        display: flex;
+        gap: 10px;
+        margin-top: 5px;
+        color: white;
+        font-size: 0.8rem;
+      }
+      .login-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-modal.active {
+        display: flex;
+      }
+
+      .login-box {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .login-box h2 {
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .login-box img {
+        display: block;
+        margin: 0 auto 1.5rem;
+        width: 100px;
+      }
+
+      .input-group {
+        margin-bottom: 1rem;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        color: var(--light-dark);
+      }
+
+      .input-group input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+      .error-message {
+        color: var(--error-color);
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        display: none;
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 0.8rem;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 1rem;
+      }
+
+      .login-footer {
+        margin-top: 1.5rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--light-dark);
+      }
+
+      .login-footer a {
+        color: #065fd4;
+        text-decoration: none;
+      }
+      .user-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #065fd4;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 1.5rem;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .search-container input {
+          width: 200px;
+        }
+
+        .sidebar {
+          width: 200px;
+        }
+
+        .video-box {
+          height: 160px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .sidebar {
+          display: none;
+        }
+
+        .video-container {
+          grid-template-columns: repeat(1, 1fr);
+        }
+
+        .search-container input {
+          width: 100%;
+        }
+
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo-container">
+        <i class="ri-menu-line"></i>
+        <div class="logo">
+          <div class="logo-img">
+            <img src="logo3.webp" />
+          </div>
+          <h1 id="logo-txt">YouTube</h1>
+        </div>
+      </div>
+      <div class="search-container">
+        <form action="">
+          <input type="text" placeholder="Search" />
+        </form>
+        <button class="search"><i class="bi bi-search"></i></button>
+        <button class="mic">
+          <span class="material-symbols-outlined">mic</span>
+        </button>
+      </div>
+      <div class="profile-container">
+        <i class="ri-video-add-line"></i>
+        <i class="ri-grid-fill"></i>
+        <i class="ri-notification-4-line"></i>
+        <div class="user-icon" id="user-icon">s</div>
+      </div>
+      <div class="login-modal" id="login-modal">
+        <div class="login-box">
+          <img
+            src="https://www.youtube.com/img/desktop/yt_1200.png"
+            alt="YouTube Logo"
+          />
+          <h2>Sign in</h2>
+          <form id="login-form">
+            <div class="input-group">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" required />
+              <div class="error-message" id="email-error">
+                Please enter a valid email
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" required />
+              <div class="error-message" id="password-error">
+                Please enter your password
+              </div>
+            </div>
+            <button type="submit" class="login-btn">Sign in</button>
+            <div class="error-message" id="login-error">
+              Invalid email or password
+            </div>
+          </form>
+          <div class="login-footer">
+            <p>
+              Don't have an account? <a href="#" id="create-account">Sign up</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-container">
+      <div class="sidebar">
+        <div class="sidebar-items">
+          <a href="#" class="sidebar-item"
+            ><i class="ri-home-5-line"></i>Home</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-compass-3-line"></i>Explore</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-wireless-charging-line"></i>Shorts</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-rss-line"></i>Subscription</a
+          >
+          <hr />
+          <a href="#" class="sidebar-item"
+            ><i class="ri-links-line"></i>Library</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-history-line"></i>History</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-video-line"></i>Your videos</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-time-line"></i>Watch later</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-play-list-2-line"></i>All videos</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-arrow-down-line"></i>Show more</a
+          >
+          <hr />
+          <h4 class="more">More from Youtube</h4>
+          <a href="#" class="sidebar-item"
+            ><i class="ri-keyboard-box-line"></i>Gaming</a
+          >
+          <a href="#" class="sidebar-item"><i class="ri-live-line"></i>Live</a>
+          <a href="#" class="sidebar-item"
+            ><i class="ri-award-line"></i>Sports</a
+          >
+          <hr />
+          <a href="#" class="sidebar-item"
+            ><i class="ri-settings-5-line"></i>Settings</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-flag-line"></i>Report history</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-question-line"></i>Help</a
+          >
+          <a href="#" class="sidebar-item"
+            ><i class="ri-feedback-line"></i>Send Feedback</a
+          >
+        </div>
+      </div>
+      <div class="content">
+        <div class="chips-wrapper">
+          <div class="chip">
+            <p>HTML</p>
+          </div>
+          <div class="chip">
+            <p>CSS</p>
+          </div>
+          <div class="chip">
+            <p>Responsive design</p>
+          </div>
+          <div class="chip">
+            <p>UI design</p>
+          </div>
+          <div class="chip">
+            <p>React</p>
+          </div>
+          <div class="chip">
+            <p>Node.js</p>
+          </div>
+          <div class="chip">
+            <p>Java</p>
+          </div>
+          <div class="chip">
+            <p>JavaScript</p>
+          </div>
+          <div class="chip">
+            <p>Python</p>
+          </div>
+          <div class="chip">
+            <p>Web Development</p>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a
+                href="https://www.youtube.com/watch?v=s5RDMG_tUao"
+                class="video-box"
+              >
+                <img src="vj.jpg" alt="" />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">Home tour of vj.siddhu with his boys</h3>
+                  <div class="channel-name">Swe Creative</div>
+                  <div class="views-upload">
+                    <div class="views">28k views</div>
+                    <div class="upload">1 year ago</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-content">
+                <div class="btn"><i class="ri-time-line"></i>Watch later</div>
+                <div class="btn">
+                  <i class="ri-list-2-line"></i>Add to queue
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a
+                href="https://www.youtube.com/watch?v=s5RDMG_tUao"
+                class="video-box"
+              >
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREi7WAHsCo1kejTZxNFQeeIM85IQRUP0gjnQ&s"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">Healer ravi yennum naan...</h3>
+                  <div class="channel-name">swe Creative</div>
+                  <div class="views-upload">
+                    <div class="views">28k views</div>
+                    <div class="upload">1 year ago</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-content">
+                <div class="btn"><i class="ri-time-line"></i>Watch later</div>
+                <div class="btn">
+                  <i class="ri-list-2-line"></i>Add to queue
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a
+                href="https://www.youtube.com/watch?v=s5RDMG_tUao"
+                class="video-box"
+              >
+                <img
+                  src="https://i.ytimg.com/vi/yNNkkuGNDhQ/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDjVkfzd8nKCNuLFvywXjuHrVmKWA"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">sabash sariyaana portti</h3>
+                  <div class="channel-name">swe Creative</div>
+                  <div class="views-upload">
+                    <div class="views">28k views</div>
+                    <div class="upload">1 year ago</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-content">
+                <div class="btn"><i class="ri-time-line"></i>Watch later</div>
+                <div class="btn">
+                  <i class="ri-list-2-line"></i>Add to queue
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a
+                href="https://www.youtube.com/watch?v=s5RDMG_tUao"
+                class="video-box"
+              >
+                <img
+                  src="https://i.ytimg.com/vi/X7RcRT5k3k4/hqdefault.jpg?v=6650460d"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">Mottamaadi with hiphop Adhi</h3>
+                  <div class="channel-name">swe Creative</div>
+                  <div class="views-upload">
+                    <div class="views">28k views</div>
+                    <div class="upload">1 year ago</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-content">
+                <div class="btn"><i class="ri-time-line"></i>Watch later</div>
+                <div class="btn">
+                  <i class="ri-list-2-line"></i>Add to queue
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a
+                href="https://www.youtube.com/watch?v=s5RDMG_tUao"
+                class="video-box"
+              >
+                <img
+                  src="https://i.ytimg.com/vi/sqqn5v1lgYI/hqdefault.jpg?v=659e7022"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">porutkaachi porom appalam saptrom</h3>
+                  <div class="channel-name">swe Creative</div>
+                  <div class="views-upload">
+                    <div class="views">28k views</div>
+                    <div class="upload">1 year ago</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-content">
+                <div class="btn"><i class="ri-time-line"></i>Watch later</div>
+                <div class="btn">
+                  <i class="ri-list-2-line"></i>Add to queue
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a
+                href="https://www.youtube.com/watch?v=s5RDMG_tUao"
+                class="video-box"
+              >
+                <img
+                  src="https://i.ytimg.com/vi/fJ1qMl5Nj1Q/hqdefault.jpg?v=66cc4265"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">Nanga ready Neenga ready aa..</h3>
+                  <div class="channel-name">swe Creative</div>
+                  <div class="views-upload">
+                    <div class="views">28k views</div>
+                    <div class="upload">1 year ago</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden-content">
+                <div class="btn"><i class="ri-time-line"></i>Watch later</div>
+                <div class="btn">
+                  <i class="ri-list-2-line"></i>Add to queue
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Additional video items to demonstrate scrolling -->
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a href="#" class="video-box">
+                <img
+                  src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">Never Gonna Give You Up</h3>
+                  <div class="channel-name">Rick Astley</div>
+                  <div class="views-upload">
+                    <div class="views">1.2B views</div>
+                    <div class="upload">12 years ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a href="#" class="video-box">
+                <img
+                  src="https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">Gangnam Style</h3>
+                  <div class="channel-name">PSY</div>
+                  <div class="views-upload">
+                    <div class="views">4.5B views</div>
+                    <div class="upload">10 years ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="video-content-cover">
+            <div class="video-content">
+              <a href="#" class="video-box">
+                <img
+                  src="https://i.ytimg.com/vi/JGwWNGJdvx8/hqdefault.jpg"
+                  alt=""
+                />
+              </a>
+              <div class="video-details">
+                <div class="channel-logo">
+                  <img
+                    src="https://static.vecteezy.com/system/resources/thumbnails/002/141/897/small_2x/business-corporate-s-letter-logo-free-vector.jpg"
+                    alt=""
+                  />
+                </div>
+                <div class="detail">
+                  <h3 class="title">Shape of You</h3>
+                  <div class="channel-name">Ed Sheeran</div>
+                  <div class="views-upload">
+                    <div class="views">5.8B views</div>
+                    <div class="upload">6 years ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+        // DOM Elements
+        const loginModal = document.getElementById('login-modal');
+        const userIcon = document.getElementById('user-icon');
+        const loginForm = document.getElementById('login-form');
+        const emailInput = document.getElementById('login-email');
+        const passwordInput = document.getElementById('login-password');
+        const emailError = document.getElementById('email-error');
+        const passwordError = document.getElementById('password-error');
+        const loginError = document.getElementById('login-error');
+
+        // Hide error messages initially
+        emailError.style.display = 'none';
+        passwordError.style.display = 'none';
+        loginError.style.display = 'none';
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide login modal initially
+            loginModal.classList.remove('active');
+            
+            // Show main content by default (no login required)
+            mainContainer.style.display = 'flex';
+        });
+        // Go back to home page
+        function goHome() {
+            homePage.style.display = 'grid';
+            videoPage.style.display = 'none';
+            recommendedSidebar.style.display = 'none';
+            document.getElementById('video-iframe').src = '';
+        }
+
+        // Validate email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Event Listeners
+        userIcon.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            loginModal.classList.toggle('active');
+        });
+
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+                // Reset form and errors
+                loginForm.reset();
+                emailError.style.display = 'none';
+                passwordError.style.display = 'none';
+                loginError.style.display = 'none';
+            }
+        });
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Reset error messages
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+            loginError.style.display = 'none';
+            
+            // Get form values
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            // Validate form
+            let isValid = true;
+            
+            if (!email) {
+                emailError.textContent = 'Please enter your email';
+                emailError.style.display = 'block';
+                isValid = false;
+            } else if (!validateEmail(email)) {
+                emailError.textContent = 'Please enter a valid email';
+                emailError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!password) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Here you would normally make an API call to authenticate
+                // For this demo, we'll just check if both fields are filled
+                if (email && password) {
+                    // Successful login
+                    loginModal.classList.remove('active');
+                    
+                    userIcon.textContent = email.charAt(0).toUpperCase();
+                    userIcon.style.backgroundColor = '#ff0000'; // YouTube red
+                    
+                    // Reset form
+                    loginForm.reset();
+                } else {
+                    loginError.style.display = 'block';
+                }
+            }
+        });
+
+        document.querySelector('.logo').addEventListener('click', goHome);
+    </script>
+   
+  </body>
+</html>
